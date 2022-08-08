@@ -3,7 +3,10 @@ package com.kakashi.projetokakashi.web_api.contract
 import groovy.transform.Canonical
 
 @Canonical
-class IncomingMessage {
+class OutgoingMessage {
+    String id
     String message
-    String senderId
+    String responseBotId
+    String originalSenderId
+    Date date
 }
