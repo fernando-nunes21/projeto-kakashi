@@ -6,4 +6,5 @@ import groovy.transform.Canonical
 class TrainingRequest {
     String question
     String answer
+    String flowId
 }

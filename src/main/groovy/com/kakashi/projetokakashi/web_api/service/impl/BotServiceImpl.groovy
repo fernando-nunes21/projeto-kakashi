@@ -1,5 +1,6 @@
 package com.kakashi.projetokakashi.web_api.service.impl
 
+import com.kakashi.projetokakashi.dialog_flow_api.contract.Intent
 import com.kakashi.projetokakashi.dialog_flow_api.service.DialogFlowService
 import com.kakashi.projetokakashi.web_api.contract.BotInfo
 import com.kakashi.projetokakashi.web_api.contract.IncomingMessage
@@ -7,6 +8,8 @@ import com.kakashi.projetokakashi.web_api.contract.OutgoingMessage
 import com.kakashi.projetokakashi.web_api.contract.TrainingRequest
 import com.kakashi.projetokakashi.web_api.contract.Trainings
 import com.kakashi.projetokakashi.web_api.contract.entity.BotConfig
+import com.kakashi.projetokakashi.web_api.contract.entity.TrainingsEntity
+import com.kakashi.projetokakashi.web_api.helper.TrainingConverter
 import com.kakashi.projetokakashi.web_api.repository.BotConfigRepository
 import com.kakashi.projetokakashi.web_api.repository.TrainingRepository
 import com.kakashi.projetokakashi.web_api.service.BotService
@@ -36,7 +39,7 @@ class BotServiceImpl implements BotService{
 
     @Override
     Trainings getAllTrainings() {
-        List<Trainings> trainings = this.trainingRepository.findAll()
+        List<TrainingsEntity> trainings = this.trainingRepository.findAll()
         return buildBotTrainings(trainings)
     }
 
@@ -51,21 +54,25 @@ class BotServiceImpl implements BotService{
 
     @Override
     void trainingBot(TrainingRequest trainingRequest) {
-
+        Intent response = dialogFlowService.createTraining(trainingRequest)
+        trainingRepository.save(TrainingConverter.converterTrainingRequestToTraining(trainingRequest, response))
     }
 
     @Override
     void editTrainingBot(TrainingRequest trainingRequest, String id) {
-
+        //Pegar no banco referenciado pelo ID do banco
+        //Alterar os dados e salvar no dialogFlow pelo flow id
+        //Salvar os novos dados no banco
     }
 
     @Override
     void deleteTraining(String id) {
-
+        //Remover dialogFlow
+        //Deletar banco
     }
 
 
-    private BotInfo buildBotInfo(List<BotConfig> botConfigs, List<Trainings> trainings) {
+    private BotInfo buildBotInfo(List<BotConfig> botConfigs, List<TrainingsEntity> trainings) {
         return new BotInfo(
                 botId: botConfigs[0].id,
                 botName: botConfigs[0].name,
@@ -75,12 +82,8 @@ class BotServiceImpl implements BotService{
         )
     }
 
-    private Trainings buildBotTrainings(List<Trainings> trainings) {
-        return new Trainings(
-                trainings.forEach{
-                    new TrainingRequest(question: it.trainings.question, answer: it.trainings.answer)
-                }
-        )
+    private Trainings buildBotTrainings(List<TrainingsEntity> trainings) {
+        return new Trainings(trainings: trainings)
     }
 
 }

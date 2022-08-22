@@ -75,4 +75,36 @@ class ParametersOutputContext {
 class Intent {
     String name
     String displayName
+    List<TrainingPhrases> trainingPhrases
+    List<Messages> messages
+}
+
+@Canonical
+@JsonIgnoreProperties(ignoreUnknown = true)
+class TrainingPhrases {
+    String name
+    String type
+    List<Parts> parts
+    String timesAddedCount
+}
+
+@Canonical
+@JsonIgnoreProperties(ignoreUnknown = true)
+class Parts {
+    String text
+    String entityType
+    String alias
+    Boolean userDefined
+}
+
+@Canonical
+@JsonIgnoreProperties(ignoreUnknown = true)
+class Messages {
+    ResponseText text
+}
+
+@Canonical
+@JsonIgnoreProperties(ignoreUnknown = true)
+class ResponseText {
+    List<String> text
 }

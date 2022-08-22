@@ -6,12 +6,18 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.gson.Gson
+import com.kakashi.projetokakashi.dialog_flow_api.contract.Intent
 import com.kakashi.projetokakashi.dialog_flow_api.contract.MessageInput
 import com.kakashi.projetokakashi.dialog_flow_api.contract.MessageOutput
+import com.kakashi.projetokakashi.dialog_flow_api.contract.Messages
+import com.kakashi.projetokakashi.dialog_flow_api.contract.Parts
 import com.kakashi.projetokakashi.dialog_flow_api.contract.QueryInput
+import com.kakashi.projetokakashi.dialog_flow_api.contract.ResponseText
 import com.kakashi.projetokakashi.dialog_flow_api.contract.Text
+import com.kakashi.projetokakashi.dialog_flow_api.contract.TrainingPhrases
 import com.kakashi.projetokakashi.dialog_flow_api.service.DialogFlowService
 import com.kakashi.projetokakashi.web_api.contract.OutgoingMessage
+import com.kakashi.projetokakashi.web_api.contract.TrainingRequest
 import com.kakashi.projetokakashi.web_api.handler.MessageOutputHelper
 import org.aspectj.bridge.Message
 import org.springframework.http.HttpEntity
@@ -46,16 +52,55 @@ class DialogFlowServiceImpl implements DialogFlowService{
         return MessageOutputHelper.buildOutgoingMessage(objectMapper.readValue(response.body, MessageOutput))
     }
 
+    Intent createTraining(TrainingRequest trainingRequest) {
+        Intent request = buildDialogFlowIntent(trainingRequest)
+        ResponseEntity<String> response = createTrainingPhrase(request)
+        return objectMapper.readValue(response.body, Intent)
+    }
+
+    private Intent buildDialogFlowIntent(TrainingRequest trainingRequest) {
+        return new Intent(
+                displayName: trainingRequest.question,
+                trainingPhrases: [
+                        new TrainingPhrases(
+                                name: UUID.randomUUID().toString(),
+                                parts: [
+                                        new Parts(text: trainingRequest.question)
+                                ]
+                        )
+                ],
+                messages: [
+                        new Messages(
+                                text: new ResponseText(
+                                        text: [trainingRequest.answer]
+                                )
+                        )
+                ]
+        )
+    }
+
     private ResponseEntity<String> getMessageResponse(MessageInput message, String sessionId) {
-        String url = this.urlDialogFlow << sessionId << ':detectIntent'
+        String url = this.urlDialogFlow << 'sessions/' << sessionId << ':detectIntent'
+        HttpHeaders headers = getHeadersToRequest()
+        HttpEntity request = new HttpEntity<>(message, headers)
+        this.restTemplate.postForEntity(url, request, String)
+    }
+
+    private ResponseEntity<String> createTrainingPhrase(Intent intent) {
+        String url = this.urlDialogFlow << '/intents'
+        HttpHeaders headers = getHeadersToRequest()
+        HttpEntity request = new HttpEntity<>(intent, headers)
+        return this.restTemplate.postForEntity(url, request, String)
+    }
+
+    private HttpHeaders getHeadersToRequest(){
         String tokenAuthenticated = getAccessToken()
         String authenticationHeader = 'Bearer ' << tokenAuthenticated
         HttpHeaders headers = new HttpHeaders()
         headers.add('Authorization', authenticationHeader)
         headers.add('Content-Type', 'application/json; charset=utf-8')
         headers.add('Accept', 'application/json')
-        HttpEntity request = new HttpEntity<>(message, headers)
-        this.restTemplate.postForEntity(url, request, String)
+        return headers
     }
 
     private String getAccessToken() {

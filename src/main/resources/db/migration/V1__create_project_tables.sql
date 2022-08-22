@@ -8,5 +8,6 @@ create table bot_config (
 create table trainings(
 	id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
     question VARCHAR(255) NOT NULL,
-    answer VARCHAR(255) NOT NULL
+    answer VARCHAR(255) NOT NULL,
+    flow_id VARCHAR(255) NOT NULL
 );

@@ -7,7 +7,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity(name = "trainings")
-class Trainings {
+class TrainingsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +19,6 @@ class Trainings {
     @Column
     String answer
 
+    @Column(name = "flow_id")
+    String flowId
 }
