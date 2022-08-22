@@ -51,25 +51,25 @@ class ApplicationController {
     ResponseEntity trainingBot(@RequestBody TrainingRequest trainingRequest) {
         botService.trainingBot(trainingRequest)
         return new ResponseEntity(
-                new GenericStatusMessage(HttpStatus.OK.value(), GenericStatusMessages.TRAINED_COMPLETE.message),
+                new GenericStatusMessage(HttpStatus.OK.value(), GenericStatusMessages.TRAINING_COMPLETED.message),
                 HttpStatus.OK
         )
     }
 
     @PutMapping("/training/{id}")
-    ResponseEntity editTrainingBot(@RequestBody TrainingRequest trainingRequest, @PathVariable String trainingId) {
-        botService.editTrainingBot(trainingRequest, trainingId)
+    ResponseEntity editTrainingBot(@RequestBody TrainingRequest trainingRequest, @PathVariable Integer id) {
+        botService.editTrainingBot(trainingRequest, id)
         return new ResponseEntity(
-                new GenericStatusMessage(HttpStatus.OK.value(), GenericStatusMessages.TRAINED_COMPLETE.message),
+                new GenericStatusMessage(HttpStatus.OK.value(), GenericStatusMessages.TRAINING_EDITED.message),
                 HttpStatus.OK
         )
     }
 
     @DeleteMapping("/training/{id}")
-    ResponseEntity deleteTraining(@PathVariable String trainingId) {
-        botService.deleteTraining(trainingId)
+    ResponseEntity deleteTraining(@PathVariable Integer id) {
+        botService.deleteTraining(id)
         return new ResponseEntity(
-                new GenericStatusMessage(HttpStatus.ACCEPTED.value(), GenericStatusMessages.TRAINED_DELETED.message),
+                new GenericStatusMessage(HttpStatus.ACCEPTED.value(), GenericStatusMessages.TRANINIG_DELETED.message),
                 HttpStatus.ACCEPTED
         )
     }

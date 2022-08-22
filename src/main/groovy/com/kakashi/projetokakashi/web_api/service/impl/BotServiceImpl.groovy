@@ -59,18 +59,29 @@ class BotServiceImpl implements BotService{
     }
 
     @Override
-    void editTrainingBot(TrainingRequest trainingRequest, String id) {
-        //Pegar no banco referenciado pelo ID do banco
-        //Alterar os dados e salvar no dialogFlow pelo flow id
-        //Salvar os novos dados no banco
+    void editTrainingBot(TrainingRequest trainingRequest, Integer id) {
+        TrainingsEntity training = getTrainingEntityById(id)
+        this.dialogFlowService.editTraining(trainingRequest, training.flowId)
+        training.question = trainingRequest.question
+        training.answer = trainingRequest.answer
+        this.trainingRepository.save(training)
     }
 
     @Override
-    void deleteTraining(String id) {
-        //Remover dialogFlow
-        //Deletar banco
+    void deleteTraining(Integer id) {
+        TrainingsEntity training = getTrainingEntityById(id)
+        this.dialogFlowService.removeTraining(training.flowId)
+        this.trainingRepository.delete(training)
     }
 
+    private TrainingsEntity getTrainingEntityById(Integer id) {
+        Optional<TrainingsEntity> dbTrainingReturning = this.trainingRepository.findById(id)
+        if (dbTrainingReturning.isPresent()) {
+            return dbTrainingReturning.get()
+        } else {
+            throw new Exception()
+        }
+    }
 
     private BotInfo buildBotInfo(List<BotConfig> botConfigs, List<TrainingsEntity> trainings) {
         return new BotInfo(

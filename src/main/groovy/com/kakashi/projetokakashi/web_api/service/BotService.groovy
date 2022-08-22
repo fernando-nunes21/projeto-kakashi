@@ -18,8 +18,8 @@ interface BotService {
 
     void trainingBot(TrainingRequest trainingRequest)
 
-    void editTrainingBot(TrainingRequest trainingRequest, String id)
+    void editTrainingBot(TrainingRequest trainingRequest, Integer id)
 
-    void deleteTraining(String id)
+    void deleteTraining(Integer id)
 
 }

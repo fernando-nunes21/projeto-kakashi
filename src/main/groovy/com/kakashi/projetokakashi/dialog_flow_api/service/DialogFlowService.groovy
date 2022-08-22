@@ -12,4 +12,8 @@ interface DialogFlowService {
 
     Intent createTraining(TrainingRequest trainingRequest)
 
+    void editTraining(TrainingRequest trainingRequest, String flowId)
+
+    void removeTraining(String flowId)
+
 }

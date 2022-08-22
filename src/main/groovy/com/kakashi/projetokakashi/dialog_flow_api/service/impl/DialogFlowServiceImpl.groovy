@@ -22,6 +22,7 @@ import com.kakashi.projetokakashi.web_api.handler.MessageOutputHelper
 import org.aspectj.bridge.Message
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
@@ -35,6 +36,7 @@ class DialogFlowServiceImpl implements DialogFlowService{
     private final static String DEFAULT_LANGUAGE_MESSAGE = "pt_BR"
     private final String USER_ACCOUNT = System.getenv("DIALOG_FLOW_USER_ACCOUNT")
     private String urlDialogFlow = System.getenv("URL_DIALOG_FLOW")
+    private String urlDialogFlowBase = System.getenv("URL_DIALOG_FLOW_BASE")
     private String tokenAudienceUrl = "https://dialogflow.googleapis.com/"
     private String credentialsFilePath = System.getenv("CREDENTIALS_FILE_PATH")
     private Gson jsonConverter = new Gson()
@@ -56,6 +58,15 @@ class DialogFlowServiceImpl implements DialogFlowService{
         Intent request = buildDialogFlowIntent(trainingRequest)
         ResponseEntity<String> response = createTrainingPhrase(request)
         return objectMapper.readValue(response.body, Intent)
+    }
+
+    void editTraining(TrainingRequest trainingRequest, String flowId){
+        Intent request = buildDialogFlowIntent(trainingRequest)
+        editTrainingPhrase(request, flowId)
+    }
+
+    void removeTraining(String flowId) {
+        removeTrainingPhrase(flowId)
     }
 
     private Intent buildDialogFlowIntent(TrainingRequest trainingRequest) {
@@ -91,6 +102,20 @@ class DialogFlowServiceImpl implements DialogFlowService{
         HttpHeaders headers = getHeadersToRequest()
         HttpEntity request = new HttpEntity<>(intent, headers)
         return this.restTemplate.postForEntity(url, request, String)
+    }
+
+    private void editTrainingPhrase(Intent intent, String flowId) {
+        String url = this.urlDialogFlowBase << flowId
+        HttpHeaders headers = getHeadersToRequest()
+        HttpEntity request = new HttpEntity<>(intent, headers)
+        this.restTemplate.patchForObject(url, request, String)
+    }
+
+    private void removeTrainingPhrase(String flowId) {
+        String url = this.urlDialogFlowBase << flowId
+        HttpHeaders headers = getHeadersToRequest()
+        HttpEntity request = new HttpEntity<>(headers)
+        this.restTemplate.exchange(url, HttpMethod.DELETE, request, String)
     }
 
     private HttpHeaders getHeadersToRequest(){
