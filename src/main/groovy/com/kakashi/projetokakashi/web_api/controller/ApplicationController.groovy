@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -41,7 +42,7 @@ class ApplicationController {
         return new ResponseEntity(trainings, HttpStatus.OK)
     }
 
-    @PostMapping
+    @PostMapping("/chat")
     ResponseEntity sendMessage(@RequestBody IncomingMessage message) {
         OutgoingMessage response = botService.sendMessageToBot(message)
         return new ResponseEntity(response, HttpStatus.OK)

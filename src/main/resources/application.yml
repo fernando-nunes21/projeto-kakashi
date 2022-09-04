@@ -8,3 +8,4 @@ spring:
     password: 12345
   jackson:
     default-property-inclusion: non_null
+

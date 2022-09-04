@@ -1,5 +1,6 @@
 package com.kakashi.projetokakashi
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.client.RestTemplateBuilder
