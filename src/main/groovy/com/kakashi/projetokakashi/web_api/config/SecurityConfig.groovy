@@ -2,7 +2,10 @@ package com.kakashi.projetokakashi.web_api.config
 
 import com.kakashi.projetokakashi.web_api.repository.AdminRepository
 import com.kakashi.projetokakashi.web_api.security.AuthenticationFilter
+import com.kakashi.projetokakashi.web_api.security.AuthorizationFilter
+import com.kakashi.projetokakashi.web_api.security.JwtUtils
 import com.kakashi.projetokakashi.web_api.service.impl.UserDetailsAdminService
+import io.jsonwebtoken.Jwt
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -20,14 +23,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final String adminAuthRoute = "/v1/kakashi/bot/admin/auth"
     private final String botSendMessage = "/v1/kakashi/bot/chat"
     private AdminRepository adminRepository
     private UserDetailsAdminService userDetailsAdminService
+    private JwtUtils jwtUtils
 
-    SecurityConfig (AdminRepository adminRepository, UserDetailsAdminService userDetailsAdminService) {
+
+    SecurityConfig (AdminRepository adminRepository, UserDetailsAdminService userDetailsAdminService, JwtUtils jwtUtils) {
         this.adminRepository = adminRepository
         this.userDetailsAdminService = userDetailsAdminService
+        this.jwtUtils = jwtUtils
     }
 
     @Override
@@ -43,8 +48,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-        //TODO - CASO ESTOURE ERRO, REVISAR ESSA PARTE
-        http.addFilter(new AuthenticationFilter(authenticationManager(), adminRepository))
+        http.addFilter(new AuthenticationFilter(authenticationManager(), adminRepository, jwtUtils))
+        http.addFilter(new AuthorizationFilter(authenticationManager(), jwtUtils, userDetailsAdminService))
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 

@@ -18,10 +18,12 @@ class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AdminRepository adminRepository
     private AuthenticationManager authenticationManager
+    private JwtUtils jwtUtils
 
-    AuthenticationFilter(AuthenticationManager authenticationManager, AdminRepository adminRepository) {
+    AuthenticationFilter(AuthenticationManager authenticationManager, AdminRepository adminRepository, JwtUtils jwtUtils) {
         this.adminRepository = adminRepository
         this.authenticationManager = authenticationManager
+        this.jwtUtils = jwtUtils
     }
 
     @Override
@@ -40,6 +42,7 @@ class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String id = (authResult.principal as AdminDetails).adminId
-        response.addHeader("Authorization", "teste123")
+        String token = jwtUtils.generateToken(id)
+        response.addHeader("Authorization", "Bearer ${token}")
     }
 }
