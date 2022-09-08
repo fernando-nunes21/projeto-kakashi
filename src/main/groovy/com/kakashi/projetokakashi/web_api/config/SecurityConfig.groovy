@@ -5,14 +5,12 @@ import com.kakashi.projetokakashi.web_api.security.AuthenticationFilter
 import com.kakashi.projetokakashi.web_api.security.AuthorizationFilter
 import com.kakashi.projetokakashi.web_api.security.JwtUtils
 import com.kakashi.projetokakashi.web_api.service.impl.UserDetailsAdminService
-import io.jsonwebtoken.Jwt
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -51,6 +49,15 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilter(new AuthenticationFilter(authenticationManager(), adminRepository, jwtUtils))
         http.addFilter(new AuthorizationFilter(authenticationManager(), jwtUtils, userDetailsAdminService))
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    }
+
+    @Override
+    void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/api-docs/**")
+        web.ignoring().antMatchers("/swagger.json")
+        web.ignoring().antMatchers("/swagger-ui.html")
+        web.ignoring().antMatchers("/swagger-resources/**")
+        web.ignoring().antMatchers("/webjars/**", "/configuration/ui", "/configuration/**")
     }
 
     @Bean

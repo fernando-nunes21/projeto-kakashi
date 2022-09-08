@@ -34,7 +34,7 @@ Para buscar informações do bot, basta fazer a chamada usando GET
 
 Para buscar todos os treinos cadastrados, basta adicionar /training na chamada e fazer uma chamada GET
 
-Para mandar mensagem para o bot, basta usar a url base e o método POST.
+Para mandar mensagem para o bot, basta usar a url base e adicionar /chat e o método POST.
 Segue o contrato para troca de mensagem:
 
 Ex:{"message":"Olá bot","senderId":"Fernando-id001"}
@@ -52,9 +52,19 @@ Ex: {"question":"Como vai você?","answer":"Eu vou bem"} -- Sim é o mesmo do cr
 Para deletar o treino, basta adicionar /training/{id} onde o ID vai ser o salvo no nosso banco (pode obter pegando os treinos)
 e fazer uma chamada DELETE. 
 
+### OBS: AUTENTICAÇÃO NECESSÁRIA PARA ENDPOINTS ADMINISTRATIVOS ##
+Todos os endpoints exceto o /chat estão protegidos por authenticação. 
+Para obter o token, use o endpoint /login passando as infos:
+
+username: botAdmin
+
+password: 12345
+
+Com isso será possível obter token de autenticação para usar os endpoints.
 
 ## Duvidas, choros e reclamações? 
 
 Abre o issue e a gente resolve! 
+Quer testar, usa o Swagger meu 10! 
 
 Dale. 
