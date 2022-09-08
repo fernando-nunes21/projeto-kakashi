@@ -1,0 +1,261 @@
+{
+	"info": {
+		"_postman_id": "27397f27-cf30-45ba-86e2-54eca34d18f4",
+		"name": "Projeto Kakashi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16067590"
+	},
+	"item": [
+		{
+			"name": "Get Bot Info",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjYyNDAwMjA5fQ.Mg29XYdHeSJp4ZlHXK92VIW_6b3x6gGz3TzwBDeK7fjPjVjKuE-RY4EixEXEnbSn-9MloTJrb5SOSaZ0vkcJfQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v1/kakashi/bot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"kakashi",
+						"bot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Trainings",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjYyMzg1OTM0fQ.VKWltqUjdsIQl3fK-7nwh1sV-le8bYEt2oGnLsfBZ9RTz-vSW5bhQZpI7_mXXRsNquB1rIahl8YHzEepuNV4zg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v1/kakashi/bot/training",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"kakashi",
+						"bot",
+						"training"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message\":\"Como vai você?\",\r\n    \"senderId\":\"Fernando-id0019090\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/kakashi/bot/chat",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"kakashi",
+						"bot",
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Training",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjYyMzg1OTM0fQ.VKWltqUjdsIQl3fK-7nwh1sV-le8bYEt2oGnLsfBZ9RTz-vSW5bhQZpI7_mXXRsNquB1rIahl8YHzEepuNV4zg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"question\":\"Como vai você?\",\r\n    \"answer\":\"Eu vou bem. E você?\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/kakashi/bot/training",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"kakashi",
+						"bot",
+						"training"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Training",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjYyMzg1OTM0fQ.VKWltqUjdsIQl3fK-7nwh1sV-le8bYEt2oGnLsfBZ9RTz-vSW5bhQZpI7_mXXRsNquB1rIahl8YHzEepuNV4zg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"question\":\"Como vai você amigo?\",\r\n    \"answer\":\"Eu vou muito bem\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/kakashi/bot/training/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"kakashi",
+						"bot",
+						"training",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Training",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjYyMzg1OTM0fQ.VKWltqUjdsIQl3fK-7nwh1sV-le8bYEt2oGnLsfBZ9RTz-vSW5bhQZpI7_mXXRsNquB1rIahl8YHzEepuNV4zg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v1/kakashi/bot/training/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"kakashi",
+						"bot",
+						"training",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"botAdmin\",\r\n    \"password\":\"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "botAdmin",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "12345",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
